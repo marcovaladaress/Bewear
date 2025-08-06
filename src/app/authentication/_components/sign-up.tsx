@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -71,9 +72,9 @@ const SignUpForm = () => {
         onError: (error) => {
           if (error.error.code === "USER_ALREADY_EXISTS") {
             toast.error("E-mail já cadastrado");
-             form.setError("email", {
-               message: "E-mail já cadastrado",
-             });
+            return form.setError("email", {
+              message: "E-mail já cadastrado",
+            });
           }
           toast.error(error.error.message);
         },
@@ -124,7 +125,11 @@ const SignUpForm = () => {
                   <FormItem>
                     <FormLabel>Senha</FormLabel>
                     <FormControl>
-                      <Input placeholder="Digite sua senha" {...field} />
+                      <Input
+                        placeholder="Digite sua senha"
+                        {...field}
+                        type="password"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -148,8 +153,16 @@ const SignUpForm = () => {
               />
             </CardContent>
             <CardFooter>
-              <Button type="submit" className="w-full">
-                Criar conta
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={form.formState.isSubmitting}
+              >
+                {form.formState.isSubmitting ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  "Criar conta"
+                )}
               </Button>
             </CardFooter>
           </form>
