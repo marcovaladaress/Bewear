@@ -588,7 +588,6 @@ async function main() {
         categoryId: categoryId,
       });
 
-    
       for (const variantData of productData.variants) {
         const variantId = crypto.randomUUID();
         const productKey = productData.name as keyof typeof productImages;
@@ -604,7 +603,7 @@ async function main() {
           name: variantData.color,
           productId: productId,
           color: variantData.color,
-          imageUrl: variantImages,
+          imageUrl: variantImages[0] || "",
           priceIncents: variantData.price,
           slug: generateSlug(`${productData.name}-${variantData.color}`),
         });
