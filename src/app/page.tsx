@@ -1,12 +1,22 @@
+import { desc } from "drizzle-orm";
 import Image from "next/image";
 
 import CategorySelect from "@/components/ui/common/category-select";
+import Footer from "@/components/ui/common/footer";
 import Header from "@/components/ui/common/header";
 import ProductList from "@/components/ui/common/product-list";
 import { db } from "@/db";
+import { productsTable } from "@/db/schema";
 
 const Home = async () => {
   const products = await db.query.productsTable.findMany({
+    with: {
+      variants: true,
+    },
+  });
+
+  const newlyCreatedProducts = await db.query.productsTable.findMany({
+    orderBy: [desc(productsTable.createdAt)],
     with: {
       variants: true,
     },
@@ -34,13 +44,17 @@ const Home = async () => {
 
         <Image
           src="/banner-2.png"
-          alt="Leve uma vida com estilo"
+          alt="Seja automáticco"
           height={0}
           width={0}
           sizes="100vw"
           className="w-full"
         />
+
+        <ProductList products={newlyCreatedProducts} title="Novos Produtos" />
+        <Footer />
       </div>
+     
     </div>
   );
 };
