@@ -8,6 +8,8 @@ import ProductList from "@/components/ui/common/product-list";
 import { db } from "@/db";
 import { productsTable } from "@/db/schema";
 
+import PartnerBrands from "./_components/partner-brands";
+
 const Home = async () => {
   const products = await db.query.productsTable.findMany({
     with: {
@@ -27,14 +29,26 @@ const Home = async () => {
     <div>
       <Header />
       <div className="space-y-6">
-        <Image
+      <Image
           src="/banner-1.svg"
+          alt="Leve uma vida com estilo"
+          height={0}
+          width={0}
+          sizes="100vw"
+          className="w-full md:hidden"
+        />
+       <div className="px-5 hidden md:block">
+         <Image
+          src="/banner-desktop.svg"
           alt="Leve uma vida com estilo"
           height={0}
           width={0}
           sizes="100vw"
           className="w-full"
         />
+
+       </div>
+        <PartnerBrands />
 
         <ProductList products={products} title="Mais vendidos" />
 
@@ -54,7 +68,6 @@ const Home = async () => {
         <ProductList products={newlyCreatedProducts} title="Novos Produtos" />
         <Footer />
       </div>
-     
     </div>
   );
 };
